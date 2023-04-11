@@ -24,5 +24,13 @@ export const products: Product[] = [
       shortDescription: "shortDescription3",
       imgUrl: "stab",
       price: 100
+  },
+  {
+      id: "4",
+      title: "paylnik3",
+      description: "Description3",
+      shortDescription: "shortDescription3",
+      imgUrl: "stab",
+      price: 100
   }
 ];

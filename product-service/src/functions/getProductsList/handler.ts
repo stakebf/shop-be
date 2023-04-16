@@ -1,10 +1,12 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import getProductsListService from './service';
+import { getAllProducts as getAllProductsService } from './service';
 
 export const getProductsList = async () => {
+  console.log("'getProductsList' was triggered");
+
   try {
-    const products = await getProductsListService();
+    const products = await getAllProductsService();
 
     return formatJSONResponse({
       body: products,

@@ -12,6 +12,8 @@ module.exports = {
   moduleNameMapper: {
     '@functions/(.*)': '<rootDir>/src/functions/$1',
     '@libs/(.*)': '<rootDir>/src/libs/$1',
-    '@shared/(.*)': '<rootDir>/src/shared/$1'
+    '@shared/(.*)': '<rootDir>/src/shared/$1',
+    '@mocks/(.*)': '<rootDir>/src/mocks/$1',
+    '@repositories/(.*)': '<rootDir>/src/repositories/$1'
   }
 };

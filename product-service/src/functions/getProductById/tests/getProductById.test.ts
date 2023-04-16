@@ -1,12 +1,12 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { getProductById } from "../handler";
-import { products } from "@functions/mockedProducts";
+import { products } from "@mocks/products";
 
 describe('getProductById handler', function () {
     it('should return correct data with 200 status', async () => {
         const event: APIGatewayProxyEvent = {
             pathParameters: {
-                productId: "1",
+                productId: "f8765ddc-9cee-4ed7-aed5-415fb5700f8e",
                 statusCode: 200
             }
         } as any;

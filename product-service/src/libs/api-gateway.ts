@@ -15,7 +15,7 @@ export const formatJSONResponse = ({
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
-      "cors": true
+      "Access-Control-Allow-Headers": "*"
     }
   }
 }

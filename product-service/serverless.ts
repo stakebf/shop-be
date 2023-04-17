@@ -51,8 +51,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-      generateSwaggerOnDeploy: true,
-      typefiles: ['./src/types/api-types.d.ts']
+      generateSwaggerOnDeploy: true
     }
   },
 };

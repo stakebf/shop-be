@@ -1,7 +1,10 @@
 import type { AWS } from '@serverless/typescript';
-
+import * as dotenv from "dotenv";
 import getProductsList from '@functions/getProductsList';
 import getProductById from '@functions/getProductById';
+import createProduct from "@functions/createProduct";
+import { TableNames } from '@shared/types/TableNames';
+dotenv.config();
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -11,7 +14,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs14.x',
     region: 'us-east-1',
-    profile: 'sandx',
+    profile: process.env.PROFILE,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -19,10 +22,22 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      PRODUCTS_TABLE: TableNames.PRODUCTS,
+      STOCKS_TABLE: TableNames.STOCKS
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['dynamodb:*'],
+        Resource: [
+          process.env.PRODUCTS_TABLE,
+          process.env.STOCKS_TABLE
+        ],
+      },
+    ],
   },
   // import the function via paths
-  functions: { getProductsList, getProductById },
+  functions: { getProductsList, getProductById, createProduct },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -36,8 +51,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-        generateSwaggerOnDeploy: true,
-        typefiles: ['./src/types/api-types.d.ts']
+      generateSwaggerOnDeploy: true
     }
   },
 };

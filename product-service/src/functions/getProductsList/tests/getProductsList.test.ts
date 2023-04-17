@@ -1,5 +1,5 @@
 import { getProductsList } from "../handler";
-import { products } from "@functions/mockedProducts";
+import { products } from "@mocks/products";
 
 describe('getProductsList handler', function () {
     it('should return correct data with 200 status', async () => {

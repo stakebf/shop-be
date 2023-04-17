@@ -1,9 +1,10 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import getProductByIdService from './service';
+import { getProductById as getProductByIdService } from './service';
 
 export const getProductById = async (event) => {
-  
+  console.log(`'getProductById' was triggered with event: ${JSON.stringify(event)}`);
+
   try {
     const product = await getProductByIdService(event.pathParameters?.productId);
 

@@ -4,9 +4,10 @@ import { getProductById as getProductByIdService } from './service';
 
 export const getProductById = async (event) => {
   console.log(`'getProductById' was triggered with event: ${JSON.stringify(event)}`);
+  const { productId = '' } = event.pathParameters;
 
   try {
-    const product = await getProductByIdService(event.pathParameters?.productId);
+    const product = await getProductByIdService(productId);
 
     if (!product) {
       return formatJSONResponse({
@@ -24,7 +25,7 @@ export const getProductById = async (event) => {
   } catch(error) {
     return formatJSONResponse({
       body: {
-        message: `Something went wrong with getting product by id ${event.pathParameters?.productId}`,
+        message: `Something went wrong with getting product by id ${productId}`,
         errorInfo: error
       },
       statusCode: 500

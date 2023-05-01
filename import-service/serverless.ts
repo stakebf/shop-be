@@ -21,13 +21,20 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      SQS_ARN: userConfig.SQS_ARN,
+      SQS_URL: userConfig.SQS_URL
     },
     iamRoleStatements: [
       {
         Effect: 'Allow',
-        Action: ["s3:*"],
+        Action: ['s3:*'],
         Resource: [`arn:aws:s3:::${userConfig.BUCKET_NAME}/*`]
       },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:*'],
+        Resource: [ userConfig.SQS_ARN ]
+      }
     ],
   },
   // import the function via paths

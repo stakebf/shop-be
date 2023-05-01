@@ -1,16 +1,27 @@
 import { CopyObjectCommand, DeleteObjectCommand, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import { SQSClient } from "@aws-sdk/client-sqs";
 import { S3Event } from "aws-lambda";
 import csvParser from "csv-parser";
 import { Readable } from "stream";
 import { formatJSONResponse } from "@libs/api-gateway";
 import { userConfig } from "src/configuration";
 
+const addToQueue = async (sqsClient, data) => {
+  await sqsClient.send(
+    new SendMessageCommand({
+      MessageBody: JSON.stringify(data),
+      QueueUrl: userConfig.SQS_URL
+    })
+  )
+}
+
 export const importFileParser = async (event: S3Event) => {
   console.log(`'importFileParser' was triggered with event: ${JSON.stringify(event)}`);
   
   try {
     const s3Client = new S3Client({ region: userConfig.REGION });
-    const streamData = [];
+    const sqsClient = new SQSClient({ region: userConfig.REGION });
 
     for(const record of event.Records) {
       const {
@@ -34,12 +45,9 @@ export const importFileParser = async (event: S3Event) => {
 
       (Body as Readable)
         .pipe(csvParser())
-        .on("data", (data) => streamData.push(data))
+        .on("data", async (data) => addToQueue(sqsClient, data))
         .on("error", (error) => {
           throw new Error(`Something went wrong during uploading file with error: ${error}`);
-        })
-        .on("end", () => {
-            console.log("results: ", streamData);
         });
 
       await s3Client.send(new CopyObjectCommand({ 

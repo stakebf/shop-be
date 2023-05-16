@@ -83,7 +83,7 @@ const serverlessConfiguration: AWS = {
           Protocol: 'email',
           TopicArn: { Ref: 'SNSTopic' },
           FilterPolicyScope: 'MessageBody',
-          FilterPolicy: { "price": [{ "numeric": [">=", 100] }] }
+          FilterPolicy: { 'price': [{ 'numeric': ['>=', 100] }] }
         }
       },
     }
